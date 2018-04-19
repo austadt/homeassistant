@@ -1,0 +1,28 @@
+alias: Sonos Text To Speech
+sequence:
+     - service: media_player.sonos_snapshot
+       data_template:
+         entity_id: "{{ id }}"
+     - service: media_player.sonos_unjoin
+       data_template:
+         entity_id: "{{ id }}"
+     - service: media_player.volume_set
+       data_template:
+         entity_id: "{{ id }}"
+         volume_level: "{{ volume }}"
+     - service: tts.google_say
+       data_template:
+         entity_id: "{{ id }}"
+         message: "{{ tekst }}"
+         language: 'no'
+     - delay: 00:00:01
+     - delay: "00:00:15"
+     
+       
+
+     - service: media_player.sonos_restore
+       data_template:
+        entity_id: "{{ id }}"
+     - service: media_player.sonos_restore
+       data_template:
+         entity_id: "{{ id }}"
