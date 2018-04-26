@@ -1,0 +1,53 @@
+- alias: "prosentavmaks"
+  hide_entity: true
+  trigger:
+    - platform: time
+      seconds: 1
+     
+    - platform: state
+      entity_id: input_number.brightness_pwstrip
+
+
+  action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.1poffprice
+          value: "{{ (states.sensor.electricity_price_none.attributes.max_price | float - states.sensor.electricity_price_none.attributes.min_price | float )  / 100 | float }}"
+
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.currentpriceinp
+          value:  " {{ ( states.sensor.electricity_price_none.state | float - states.sensor.electricity_price_none.attributes.min_price | float ) / states.input_number.box1.state | float }} "
+      
+      - service: input_number.set_value
+        data_template:
+         entity_id: input_number.R_intensity
+         value: "{{ states.input_number.currentpriceinp.state | float * 2.55 }}"
+        
+      - service: input_number.set_value
+        data_template:
+         entity_id: input_number.G_intensity
+         value: "{{ (states.input_number.currentpriceinp.state | float * -2.55) + 255 }}"
+    
+      - service: light.turn_on
+        data_template:
+         entity_id: light.powerstrip
+         brightness: "{{states.input_number.brightness_pwstrip.state | int }}"
+         rgb_color: ["{{ states.input_number.R_intensity.state | int }}", "{{states.input_number.G_intensity.state | int }}" , 0]
+
+
+
+         
+         
+- alias: 'testsonos'
+  trigger:    
+    platform: state
+    entity_id: input_boolean.playsonostest
+ 
+ 
+  action:
+      - service: script.sonos_ttl
+        data_template:
+          id: media_player.kjkken
+          tekst: 'Kraftprisen er nå {{ (states.sensor.electricity_price_none.state | float * 100) | round(0)}} øre. Det er {{ states.sensor.percentpower.state | round(0) }} prosent av dagens makspris.'
+          volume: 0.5
