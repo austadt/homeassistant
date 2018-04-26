@@ -1,0 +1,72 @@
+sensor:
+  - platform: tibber
+    access_token: youurtoken
+
+
+  - platform: template
+    sensors:
+      percentpower:
+        friendly_name: "av Maks"
+        unit_of_measurement: '%'
+        value_template: "{{ states.input_number.currentpriceinp.state }}"
+
+
+
+# Config for milight
+
+light:
+  platform: limitlessled
+  bridges:
+    - host: 192.168.1.95
+      groups:
+      - number: 1
+        name: powerstrip
+        type: rgbw
+        
+# Variabler for kalkulering av prosentpris strom       
+
+
+input_number:
+  currentpriceinp:
+    name: Prosent av maks
+    initial: 0
+    min: 0
+    max: 100
+    step: 0.001
+    mode: box
+  onepoffprice:
+    name: En prosent
+    initial: 0
+    min: 0
+    max: 100
+    step: 0.001
+    mode: box
+    
+  g_intensety:
+    name: G
+    initial: 0
+    min: 0
+    max: 255
+    step: 1
+    mode: slider
+    
+  r_intensity:
+    name: R
+    initial: 0
+    min: 0
+    max: 255
+    step: 1
+    mode: slider
+    
+  brightness_pwstrip:
+    name: Dimming prisstrips
+    min: 0
+    max: 255
+    step: 1
+    mode: slider
+
+
+    
+input_boolean:
+  playsonostest:
+    name: les opp pris
