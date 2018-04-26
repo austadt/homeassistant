@@ -31,7 +31,7 @@ input_number:
     max: 100
     step: 0.001
     mode: box
-  1poffprice:
+  onepoffprice:
     name: En prosent
     initial: 0
     min: 0
