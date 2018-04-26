@@ -1,6 +1,6 @@
 sensor:
   - platform: tibber
-    access_token: 54c441f83f5c80f86b6ad4dc34709afb9c07d0dc2db41a187370dbd9e1b4a718
+    access_token: Your token from developer.tibber.com
 
 
   - platform: template
